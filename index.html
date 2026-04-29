@@ -583,10 +583,29 @@ function renderCharts(){
     {type:'bar',label:'Úrok',data:interestData,backgroundColor:'rgba(181,96,10,0.55)',borderColor:'rgba(181,96,10,0.8)',borderWidth:1,borderRadius:3,yAxisID:'y2',order:2}
   ]},options:{
     responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{
-      if(ctx.dataset.label==='Úrok'&&ctx.raw===null)return null;
-      return ctx.dataset.label+': '+(ctx.raw!==null?ctx.parsed.y.toLocaleString('cs-CZ',{minimumFractionDigits:2})+' Kč':'—');
-    }}}},
+    plugins:{legend:{display:false},tooltip:{
+      mode:'index', intersect:false,
+      callbacks:{
+        title:items=>{
+          if(!items.length)return '';
+          const date=items[0].label;
+          // Najdi všechny transakce v tento den
+          const dayTxs=f.filter(t=>t.date===date);
+          if(!dayTxs.length)return date;
+          return [date, ...dayTxs.map(t=>{
+            const sign=t.amount>=0?'+':'';
+            const typeIcon={kapesné:'💰',vklad:'📥',výběr:'📤',úrok:'✨'}[t.type]||'•';
+            return typeIcon+' '+t.note+' '+sign+t.amount.toLocaleString('cs-CZ',{minimumFractionDigits:2})+' Kč';
+          })];
+        },
+        label:ctx=>{
+          if(ctx.dataset.label==='Úrok'&&ctx.raw===null)return null;
+          if(ctx.dataset.label==='Zůstatek')return 'Zůstatek: '+ctx.parsed.y.toLocaleString('cs-CZ',{minimumFractionDigits:2})+' Kč';
+          if(ctx.dataset.label==='Úrok'&&ctx.raw!==null)return 'Úrok: +'+ctx.parsed.y+' Kč';
+          return null;
+        }
+      }
+    }},
     scales:{
       x:{ticks:{maxTicksLimit:6,color:'#9e9890',font:{size:9,family:'DM Mono'}},grid:{color:'rgba(0,0,0,0.04)'}},
       y:{position:'left',ticks:{color:'#2d7a5f',font:{size:9,family:'DM Mono'},callback:v=>v+' Kč'},grid:{color:'rgba(0,0,0,0.04)'}},
@@ -596,7 +615,10 @@ function renderCharts(){
 
   // INTEREST bars
   const iF=f.filter(t=>t.type==='úrok');
-  mkChart('chartInterest',{type:'bar',data:{labels:iF.map(t=>t.date),datasets:[{label:'Úrok',data:iF.map(t=>t.amount),backgroundColor:'rgba(45,122,95,0.7)',borderColor:'#2d7a5f',borderWidth:1,borderRadius:3}]},options:{...cOpts,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'+'+ctx.parsed.y+' Kč'}}}}});
+  mkChart('chartInterest',{type:'bar',data:{labels:iF.map(t=>t.date),datasets:[{label:'Úrok',data:iF.map(t=>t.amount),backgroundColor:'rgba(45,122,95,0.7)',borderColor:'#2d7a5f',borderWidth:1,borderRadius:3}]},options:{...cOpts,plugins:{legend:{display:false},tooltip:{callbacks:{
+    title:items=>{ if(!items.length)return ''; const t=iF[items[0].dataIndex]; return t?[t.date, t.note]:[items[0].label]; },
+    label:ctx=>{ const t=iF[ctx.dataIndex]; return '✨ úrok: +'+ctx.parsed.y+' Kč'+(t?' (zůstatek před: '+t.note.match(/\d+/)?.[0]+' Kč)':''); }
+  }}}}});
 
   // DONUT
   const types={kapesné:0,vklad:0,výběr:0,úrok:0};
