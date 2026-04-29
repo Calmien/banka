@@ -16,63 +16,116 @@
     --radius:10px;--radius-sm:6px;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;padding:2rem 1.5rem}
-  .page{max-width:760px;margin:0 auto}
-  .header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2rem;padding-bottom:1.25rem;border-bottom:1.5px solid var(--border);flex-wrap:wrap;gap:10px}
-  .header h1{font-size:1.6rem;font-weight:600;letter-spacing:-.03em}
-  .header p{font-size:13px;color:var(--text3);margin-top:3px;font-family:var(--mono)}
-  .badge{font-size:11px;font-family:var(--mono);padding:4px 10px;border-radius:20px;border:1px solid var(--border);color:var(--text3)}
-  .badge.ok{color:var(--green);border-color:var(--green)}
-  .badge.err{color:var(--red);border-color:var(--red)}
-  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem}
-  .card-label{font-size:11px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-  .card-value{font-size:1.3rem;font-weight:600;font-family:var(--mono);letter-spacing:-.02em}
-  .card-value.green{color:var(--green)}.card-value.blue{color:var(--blue)}
-  .box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.25rem}
-  .section-title{font-size:12px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:1rem}
-  .chart-wrap{position:relative;height:200px}
-  .legend{display:flex;gap:14px;font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:10px}
-  .legend span{display:flex;align-items:center;gap:5px}
-  .dot{width:8px;height:8px;border-radius:2px}
-  .form-row{display:grid;grid-template-columns:130px 160px 100px 1fr auto;gap:8px;align-items:end;margin-bottom:10px}
-  .fg label{display:block;font-size:11px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
-  input,select{width:100%;height:36px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);font-family:var(--mono);font-size:13px;padding:0 10px;outline:none;transition:border-color .15s}
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;padding:1.25rem 1rem}
+  .page{max-width:820px;margin:0 auto}
+
+  /* HEADER */
+  .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1.5px solid var(--border);gap:10px;flex-wrap:wrap}
+  .header h1{font-size:1.4rem;font-weight:600;letter-spacing:-.03em}
+  .header p{font-size:12px;color:var(--text3);margin-top:2px;font-family:var(--mono)}
+  .badge{font-size:11px;font-family:var(--mono);padding:4px 10px;border-radius:20px;border:1px solid var(--border);color:var(--text3);white-space:nowrap}
+  .badge.ok{color:var(--green);border-color:var(--green)}.badge.err{color:var(--red);border-color:var(--red)}
+
+  /* CARDS — 4 na desktop, 2×2 na mobil */
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem}
+  .card-label{font-size:10px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+  .card-value{font-size:1.15rem;font-weight:600;font-family:var(--mono);letter-spacing:-.02em;line-height:1.2}
+  .card-value.green{color:var(--green)}.card-value.blue{color:var(--blue)}.card-value.amber{color:var(--amber)}
+  .card-sub{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:3px}
+
+  /* BOX */
+  .box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;margin-bottom:1.1rem}
+  .box-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.875rem;flex-wrap:wrap;gap:8px}
+  .section-title{font-size:11px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--text3)}
+
+  /* SPOŘENÍ BAR */
+  .savings-bar-label{display:flex;justify-content:space-between;font-size:10px;font-family:var(--mono);color:var(--text3);margin-bottom:5px}
+  .savings-bar{height:7px;background:var(--surface2);border-radius:4px;overflow:hidden}
+  .savings-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),#4db88a);border-radius:4px;transition:width .5s ease}
+
+  /* GRAFY */
+  .chart-wrap{position:relative;height:185px}
+  .chart-wrap.tall{height:210px}
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.1rem}
+  .legend{display:flex;gap:12px;font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:7px;flex-wrap:wrap}
+  .legend span{display:flex;align-items:center;gap:4px}
+  .dot{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+
+  /* PERIOD TABS */
+  .period-tabs{display:flex;gap:3px;flex-wrap:wrap}
+  .ptab{height:26px;padding:0 10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;color:var(--text3);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .15s;white-space:nowrap}
+  .ptab:hover{background:var(--surface2);color:var(--text2)}
+  .ptab.active{background:var(--text);border-color:var(--text);color:var(--bg)}
+
+  /* FORMULÁŘ */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+  .form-grid .fg-full{grid-column:1/-1}
+  .fg label{display:block;font-size:10px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  input,select{width:100%;height:38px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);font-family:var(--mono);font-size:13px;padding:0 10px;outline:none;transition:border-color .15s}
   input:focus,select:focus{border-color:var(--text2);background:var(--surface)}
-  .btn{height:36px;padding:0 16px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--mono);font-size:12px;cursor:pointer;white-space:nowrap;transition:all .15s}
+  .btn{height:38px;padding:0 14px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--mono);font-size:12px;cursor:pointer;white-space:nowrap;transition:all .15s}
   .btn:hover{border-color:var(--text2);color:var(--text);background:var(--surface2)}
   .btn:disabled{opacity:.4;cursor:not-allowed}
-  .btn.primary{background:var(--text);border-color:var(--text);color:var(--bg);font-weight:500}
+  .btn.primary{background:var(--text);border-color:var(--text);color:var(--bg);font-weight:500;width:100%}
   .btn.primary:hover{background:#333}
   .btn.danger{color:var(--red);border-color:var(--red)}.btn.danger:hover{background:var(--red-light)}
   .btn.amber{color:var(--amber);border-color:var(--amber)}.btn.amber:hover{background:var(--amber-light)}
-  .info{margin-top:10px;font-size:12px;font-family:var(--mono);color:var(--text3);min-height:18px}
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .btn-row .btn{flex:1;min-width:120px;text-align:center}
+  .info{margin-top:8px;font-size:11px;font-family:var(--mono);color:var(--text3);min-height:16px}
+
+  /* TABULKA */
   .ledger-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-  .ledger-hdr{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--border)}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th{font-family:var(--mono);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--bg)}
-  td{padding:9px 12px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:12px}
+  .ledger-hdr{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;font-size:12px;min-width:420px}
+  th{font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);background:var(--bg);white-space:nowrap}
+  td{padding:8px 10px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11px;white-space:nowrap}
   tr:last-child td{border-bottom:none}
   tr:hover td{background:var(--bg)}
-  .tag{display:inline-block;font-size:10px;font-family:var(--mono);padding:2px 8px;border-radius:20px;font-weight:500}
+  .tag{display:inline-block;font-size:9px;font-family:var(--mono);padding:2px 7px;border-radius:20px;font-weight:500}
   .t-kapesné{background:var(--purple-light);color:var(--purple)}
   .t-vklad{background:var(--blue-light);color:var(--blue)}
   .t-výběr{background:var(--red-light);color:var(--red)}
   .t-úrok{background:var(--green-light);color:var(--green)}
   .pos{color:var(--green);font-weight:500}.neg{color:var(--red);font-weight:500}
-  .del-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;padding:2px 6px;border-radius:4px;transition:all .15s}
+  .del-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px;padding:2px 5px;border-radius:4px;transition:all .15s}
   .del-btn:hover{color:var(--red);background:var(--red-light)}
   .empty{text-align:center;padding:2rem;font-family:var(--mono);font-size:12px;color:var(--text3)}
-  .setup{background:var(--amber-light);border:1px solid #e8c080;border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:13px;line-height:1.7}
-  .setup code{background:rgba(0,0,0,0.08);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:12px}
+
+  /* SETUP */
+  .setup{background:var(--amber-light);border:1px solid #e8c080;border-radius:var(--radius);padding:1rem;margin-bottom:1.25rem;font-size:13px;line-height:1.7}
+  .setup code{background:rgba(0,0,0,0.08);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:11px}
   .setup a{color:var(--amber)}
-  .setup-row{display:flex;gap:8px;margin-top:10px}
-  .setup-row input{flex:1;font-size:12px;height:32px;background:var(--surface)}
-  @media(max-width:600px){.cards{grid-template-columns:repeat(2,1fr)}.form-row{grid-template-columns:1fr 1fr}.form-row>*:nth-child(4),.form-row>*:nth-child(5){grid-column:1/-1}}
+  .setup-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .setup-row input{flex:1;min-width:200px;font-size:12px;height:34px;background:var(--surface)}
+  .setup-row .btn{height:34px}
+
+  /* RESPONSIVE */
+  @media(max-width:600px){
+    body{padding:1rem .75rem}
+    .cards{grid-template-columns:repeat(2,1fr);gap:8px}
+    .card-value{font-size:1.05rem}
+    .charts-grid{grid-template-columns:1fr}
+    .chart-wrap{height:170px}
+    .chart-wrap.tall{height:200px}
+    /* tabulka — na mobilu skryjeme sloupec Popis */
+    .col-note{display:none}
+    table{min-width:320px}
+    .ledger-hdr{flex-direction:column;align-items:flex-start}
+    .period-tabs{width:100%}
+    .ptab{flex:1;text-align:center}
+  }
+  @media(max-width:380px){
+    .header h1{font-size:1.2rem}
+    .card-value{font-size:.95rem}
+  }
 </style>
 </head>
 <body>
 <div class="page">
+
   <div class="header">
     <div>
       <h1>🏦 Adamova banka</h1>
@@ -86,34 +139,85 @@
     1. Jdi na <a href="https://www.notion.so/my-integrations" target="_blank">notion.so/my-integrations</a> → <strong>+ New integration</strong><br>
     2. Název: <code>Adamova Banka</code>, vyber workspace → <strong>Save</strong><br>
     3. Zkopíruj <strong>Internal Integration Secret</strong> (začíná <code>ntn_</code>)<br>
-    4. V Notion otevři stránku <strong>Adamova Banka</strong> → ⋯ → <strong>Connections</strong> → připoj integraci<br>
+    4. V Notion: stránka <strong>Adamova Banka</strong> → ⋯ → <strong>Connections</strong> → připoj integraci<br>
     5. Vlož token sem:
     <div class="setup-row">
       <input type="password" id="tokenInput" placeholder="ntn_XXXXXXXXXXXXXXXX">
-      <button class="btn primary" onclick="saveToken()">Uložit</button>
+      <button class="btn primary" style="width:auto" onclick="saveToken()">Uložit</button>
     </div>
-    <div style="margin-top:8px;font-size:12px;color:var(--text3)">Token se uloží jen lokálně v tomto prohlížeči.</div>
+    <div style="margin-top:8px;font-size:11px;color:var(--text3)">Token se uloží jen lokálně v tomto prohlížeči.</div>
   </div>
 
+  <!-- Karty -->
   <div class="cards">
-    <div class="card"><div class="card-label">Zůstatek</div><div class="card-value" id="bal">—</div></div>
-    <div class="card"><div class="card-label">Úrok celkem</div><div class="card-value green" id="totalInterest">—</div></div>
-    <div class="card"><div class="card-label">Kapesné celkem</div><div class="card-value blue" id="totalAllowance">—</div></div>
-    <div class="card"><div class="card-label">Příští úrok (ned.)</div><div class="card-value" id="nextInterest">—</div></div>
+    <div class="card">
+      <div class="card-label">Zůstatek</div>
+      <div class="card-value" id="bal">—</div>
+      <div class="card-sub" id="balSub"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Úrok celkem</div>
+      <div class="card-value green" id="totalInterest">—</div>
+      <div class="card-sub" id="interestSub"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Kapesné celkem</div>
+      <div class="card-value blue" id="totalAllowance">—</div>
+      <div class="card-sub" id="allowanceSub"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Příští úrok</div>
+      <div class="card-value amber" id="nextInterest">—</div>
+      <div class="card-sub">tuto neděli</div>
+    </div>
   </div>
 
+  <!-- Progress bar spoření -->
+  <div class="box" id="savingsBox">
+    <div class="box-header">
+      <span class="section-title">Jak moc spoříš?</span>
+      <span id="savingsPct" style="font-size:12px;font-family:var(--mono);color:var(--green);font-weight:500"></span>
+    </div>
+    <div class="savings-bar-label"><span>utraceno</span><span>ušetřeno</span></div>
+    <div class="savings-bar"><div class="savings-bar-fill" id="savingsBarFill" style="width:0%"></div></div>
+    <div style="margin-top:7px;font-size:10px;font-family:var(--mono);color:var(--text3)" id="savingsDesc"></div>
+  </div>
+
+  <!-- Graf zůstatku -->
   <div class="box">
-    <div class="section-title">Vývoj zůstatku</div>
-    <div class="chart-wrap"><canvas id="chart"></canvas></div>
+    <div class="box-header">
+      <span class="section-title">Vývoj zůstatku</span>
+      <div class="period-tabs">
+        <button class="ptab" onclick="setPeriod('7')" data-p="7">7 dní</button>
+        <button class="ptab" onclick="setPeriod('30')" data-p="30">30 dní</button>
+        <button class="ptab" onclick="setPeriod('90')" data-p="90">3 měs.</button>
+        <button class="ptab active" onclick="setPeriod('all')" data-p="all">Vše</button>
+      </div>
+    </div>
+    <div class="chart-wrap tall"><canvas id="chartBalance"></canvas></div>
     <div class="legend">
       <span><span class="dot" style="background:#2d7a5f"></span>zůstatek</span>
       <span><span class="dot" style="background:#2c5f8a;height:2px;border-radius:0"></span>bez úroku</span>
     </div>
   </div>
 
+  <!-- Dva menší grafy -->
+  <div class="charts-grid">
+    <div class="box" style="margin-bottom:0">
+      <div class="box-header"><span class="section-title">Týdenní úroky</span></div>
+      <div class="chart-wrap"><canvas id="chartInterest"></canvas></div>
+    </div>
+    <div class="box" style="margin-bottom:0">
+      <div class="box-header"><span class="section-title">Typy transakcí</span></div>
+      <div class="chart-wrap"><canvas id="chartTypes"></canvas></div>
+    </div>
+  </div>
+  <div style="margin-bottom:1.1rem"></div>
+
+  <!-- Formulář -->
   <div class="box">
-    <div class="section-title">Přidat transakci</div>
-    <div class="form-row">
+    <div class="section-title" style="margin-bottom:.875rem">Přidat transakci</div>
+    <div class="form-grid">
       <div class="fg"><label>Datum</label><input type="date" id="txDate"></div>
       <div class="fg"><label>Typ</label>
         <select id="txType" onchange="onTypeChange()">
@@ -123,162 +227,171 @@
           <option value="úrok">Úrok (ručně)</option>
         </select>
       </div>
-      <div class="fg"><label>Částka</label><input type="number" id="txAmount" value="20" min="0" step="1"></div>
+      <div class="fg"><label>Částka (Kč)</label><input type="number" id="txAmount" value="20" min="0" step="1"></div>
       <div class="fg"><label>Popis</label><input type="text" id="txNote" placeholder="kapesné, uklizení…"></div>
-      <div class="fg"><label>&nbsp;</label><button class="btn primary" id="addBtn" onclick="addTx()">+ Přidat</button></div>
+      <div class="fg fg-full"><button class="btn primary" id="addBtn" onclick="addTx()">+ Přidat transakci</button></div>
     </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+    <div class="btn-row">
       <button class="btn amber" onclick="addSundayInterests()">↻ Dopočítat neděle</button>
       <button class="btn" onclick="loadData()">⟳ Obnovit</button>
     </div>
-    <div class="info" id="infoBar">Úrok = ⌊zůstatek ÷ 20⌋ Kč, připisuje se každou neděli.</div>
+    <div class="info" id="infoBar">Úrok = ⌊zůstatek ÷ 20⌋ Kč, každou neděli.</div>
   </div>
 
+  <!-- Tabulka -->
   <div class="ledger-section">
     <div class="ledger-hdr">
-      <span class="section-title" style="margin:0">Přehled transakcí</span>
-      <button class="btn danger" onclick="clearAll()">Smazat vše</button>
+      <span class="section-title">Přehled transakcí</span>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;width:100%;justify-content:space-between">
+        <div class="period-tabs">
+          <button class="ptab active" onclick="setTablePeriod('all')" data-tp="all">Vše</button>
+          <button class="ptab" onclick="setTablePeriod('30')" data-tp="30">30 dní</button>
+          <button class="ptab" onclick="setTablePeriod('7')" data-tp="7">7 dní</button>
+        </div>
+        <button class="btn danger" onclick="clearAll()">Smazat vše</button>
+      </div>
     </div>
-    <div id="ledgerWrap"><div class="empty">načítám…</div></div>
+    <div class="table-wrap">
+      <div id="ledgerWrap"><div class="empty">načítám…</div></div>
+    </div>
   </div>
+
 </div>
-
 <script>
-const DB_ID = '9266cc0cf54f47ef8fcdca1c06dc1051';
-const PROXY = 'https://snowy-bonus-0966.michalnozicka7.workers.dev';
-const TOKEN_KEY = 'adamova_banka_token';
+const DB_ID='9266cc0cf54f47ef8fcdca1c06dc1051';
+const PROXY='https://snowy-bonus-0966.michalnozicka7.workers.dev';
+const TOKEN_KEY='adamova_banka_token';
+let token=localStorage.getItem(TOKEN_KEY)||'';
+let txs=[],period='all',tablePeriod='all',charts={};
 
-let token = localStorage.getItem(TOKEN_KEY) || '';
-let txs = [];
-let chartInst = null;
+const fmt=n=>parseFloat(n).toLocaleString('cs-CZ',{minimumFractionDigits:2,maximumFractionDigits:2})+' Kč';
+const todayStr=()=>new Date().toISOString().slice(0,10);
+const setInfo=msg=>document.getElementById('infoBar').textContent=msg;
+const setBadge=(cls,msg)=>{const b=document.getElementById('badge');b.textContent='⬤ '+msg;b.className='badge '+(cls||'');};
 
-const fmt = n => parseFloat(n).toLocaleString('cs-CZ',{minimumFractionDigits:2,maximumFractionDigits:2})+' Kč';
-const todayStr = () => new Date().toISOString().slice(0,10);
-const setInfo = msg => document.getElementById('infoBar').textContent = msg;
-const setBadge = (cls, msg) => { const b=document.getElementById('badge'); b.textContent='⬤ '+msg; b.className='badge '+(cls||''); };
-
-function saveToken() {
-  const val = document.getElementById('tokenInput').value.trim();
-  if (!val) return;
-  token = val; localStorage.setItem(TOKEN_KEY, val);
-  document.getElementById('setupDiv').style.display = 'none';
+function saveToken(){
+  const val=document.getElementById('tokenInput').value.trim();
+  if(!val)return;
+  token=val;localStorage.setItem(TOKEN_KEY,val);
+  document.getElementById('setupDiv').style.display='none';
   loadData();
 }
 
-async function notionReq(path, method='GET', payload=null) {
-  const res = await fetch(PROXY, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ path, method, payload, token })
-  });
-  const data = await res.json();
-  if (data.object === 'error' || data.error) throw new Error(data.message || data.error || 'Notion error');
+async function notionReq(path,method='GET',payload=null){
+  const res=await fetch(PROXY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path,method,payload,token})});
+  const data=await res.json();
+  if(data.object==='error'||data.error)throw new Error(data.message||data.error||'Notion error');
   return data;
 }
 
-async function loadData() {
-  if (!token) {
-    document.getElementById('setupDiv').style.display='block';
-    setBadge('err','bez tokenu');
-    document.getElementById('ledgerWrap').innerHTML='<div class="empty">Nastav token výše.</div>';
-    return;
-  }
-  try {
-    setBadge('','načítám…'); setInfo('Načítám z Notion…');
-    const data = await notionReq('/databases/'+DB_ID+'/query','POST',{
-      sorts:[{property:'Datum',direction:'ascending'}], page_size:100
-    });
-    txs = data.results.map(p=>({
-      id: p.id,
-      date: p.properties['Datum']?.date?.start||'',
-      type: p.properties['Typ']?.select?.name||'',
-      amount: p.properties['Částka']?.number||0,
-      note: p.properties['Popis']?.title?.[0]?.plain_text||'',
-      balance: p.properties['Zůstatek']?.number||0,
-      totalInterest: p.properties['Úrok celkem']?.number||0
+async function loadData(){
+  if(!token){document.getElementById('setupDiv').style.display='block';setBadge('err','bez tokenu');document.getElementById('ledgerWrap').innerHTML='<div class="empty">Nastav token výše.</div>';return;}
+  try{
+    setBadge('','načítám…');setInfo('Načítám z Notion…');
+    const data=await notionReq('/databases/'+DB_ID+'/query','POST',{sorts:[{property:'Datum',direction:'ascending'}],page_size:100});
+    txs=data.results.map(p=>({
+      id:p.id,date:p.properties['Datum']?.date?.start||'',
+      type:p.properties['Typ']?.select?.name||'',
+      amount:p.properties['Částka']?.number||0,
+      note:p.properties['Popis']?.title?.[0]?.plain_text||'',
+      balance:p.properties['Zůstatek']?.number||0,
+      totalInterest:p.properties['Úrok celkem']?.number||0
     }));
-    document.getElementById('lastUpdate').textContent = 'aktualizováno '+new Date().toLocaleTimeString('cs-CZ');
-    setBadge('ok','notion připojen'); setInfo('Načteno ✓'); render();
-  } catch(e) {
-    setBadge('err','chyba'); setInfo('Chyba: '+e.message);
-    if (e.message.includes('401')||e.message.includes('Unauthorized')) document.getElementById('setupDiv').style.display='block';
+    document.getElementById('lastUpdate').textContent='aktualizováno '+new Date().toLocaleTimeString('cs-CZ');
+    setBadge('ok','notion připojen');setInfo('Načteno ✓');render();
+  }catch(e){
+    setBadge('err','chyba');setInfo('Chyba: '+e.message);
+    if(e.message.includes('401')||e.message.includes('Unauthorized'))document.getElementById('setupDiv').style.display='block';
   }
 }
 
-const getCurrentBalance = () => txs.length>0 ? txs[txs.length-1].balance : 0;
-const getCurrentInterestTotal = () => txs.length>0 ? txs[txs.length-1].totalInterest : 0;
-
-async function addTx() {
-  const date = document.getElementById('txDate').value||todayStr();
-  const type = document.getElementById('txType').value;
-  const rawAmt = parseFloat(document.getElementById('txAmount').value);
-  const note = document.getElementById('txNote').value.trim()||type;
-  const amount = type==='výběr' ? -(Math.abs(rawAmt)||0) : (Math.abs(rawAmt)||0);
-  if (amount===0) { setInfo('Zadej částku.'); return; }
-  const newBal = getCurrentBalance()+amount;
-  const newIntTotal = type==='úrok' ? getCurrentInterestTotal()+amount : getCurrentInterestTotal();
-  const btn = document.getElementById('addBtn');
-  btn.disabled=true; setInfo('Ukládám…');
-  try {
-    await notionReq('/pages','POST',{ parent:{database_id:DB_ID}, properties:{
-      'Popis':{title:[{text:{content:note}}]},
-      'Datum':{date:{start:date}},
-      'Typ':{select:{name:type}},
-      'Částka':{number:amount},
-      'Zůstatek':{number:newBal},
-      'Úrok celkem':{number:newIntTotal}
-    }});
-    document.getElementById('txAmount').value = type==='kapesné'?'20':'';
-    document.getElementById('txNote').value = '';
-    setInfo('Uloženo ✓'); await loadData();
-  } catch(e) { setInfo('Chyba: '+e.message); } finally { btn.disabled=false; }
+function filterByPeriod(data,days){
+  if(days==='all')return data;
+  const cutoff=new Date();cutoff.setDate(cutoff.getDate()-parseInt(days));
+  const cutoffStr=cutoff.toISOString().slice(0,10);
+  return data.filter(t=>t.date>=cutoffStr);
 }
 
-async function deleteTx(id) {
-  if (!confirm('Smazat tento záznam?')) return;
+function setPeriod(p){
+  period=p;
+  document.querySelectorAll('.ptab[data-p]').forEach(b=>b.classList.toggle('active',b.dataset.p===p));
+  renderCharts();
+}
+
+function setTablePeriod(p){
+  tablePeriod=p;
+  document.querySelectorAll('.ptab[data-tp]').forEach(b=>b.classList.toggle('active',b.dataset.tp===p));
+  renderLedger();
+}
+
+const getCurrentBalance=()=>txs.length>0?txs[txs.length-1].balance:0;
+const getCurrentInterestTotal=()=>txs.length>0?txs[txs.length-1].totalInterest:0;
+
+async function addTx(){
+  const date=document.getElementById('txDate').value||todayStr();
+  const type=document.getElementById('txType').value;
+  const rawAmt=parseFloat(document.getElementById('txAmount').value);
+  const note=document.getElementById('txNote').value.trim()||type;
+  const amount=type==='výběr'?-(Math.abs(rawAmt)||0):(Math.abs(rawAmt)||0);
+  if(amount===0){setInfo('Zadej částku.');return;}
+  const newBal=getCurrentBalance()+amount;
+  const newIntTotal=type==='úrok'?getCurrentInterestTotal()+amount:getCurrentInterestTotal();
+  const btn=document.getElementById('addBtn');btn.disabled=true;setInfo('Ukládám…');
+  try{
+    await notionReq('/pages','POST',{parent:{database_id:DB_ID},properties:{
+      'Popis':{title:[{text:{content:note}}]},'Datum':{date:{start:date}},
+      'Typ':{select:{name:type}},'Částka':{number:amount},
+      'Zůstatek':{number:newBal},'Úrok celkem':{number:newIntTotal}
+    }});
+    document.getElementById('txAmount').value=type==='kapesné'?'20':'';
+    document.getElementById('txNote').value='';
+    setInfo('Uloženo ✓');await loadData();
+  }catch(e){setInfo('Chyba: '+e.message);}finally{btn.disabled=false;}
+}
+
+async function deleteTx(id){
+  if(!confirm('Smazat?'))return;
   setInfo('Mažu…');
-  try {
+  try{
     await notionReq('/pages/'+id,'PATCH',{archived:true});
     await loadData();
-    let bal=0, intTotal=0;
-    for (const t of txs) {
-      bal+=t.amount; if(t.type==='úrok') intTotal+=t.amount;
+    let bal=0,intTotal=0;
+    for(const t of txs){
+      bal+=t.amount;if(t.type==='úrok')intTotal+=t.amount;
       await notionReq('/pages/'+t.id,'PATCH',{properties:{'Zůstatek':{number:bal},'Úrok celkem':{number:intTotal}}});
     }
-    setInfo('Smazáno ✓'); await loadData();
-  } catch(e) { setInfo('Chyba: '+e.message); }
+    setInfo('Smazáno ✓');await loadData();
+  }catch(e){setInfo('Chyba: '+e.message);}
 }
 
-async function clearAll() {
-  if (!confirm('Opravdu smazat všechny záznamy?')) return;
+async function clearAll(){
+  if(!confirm('Opravdu smazat vše?'))return;
   setInfo('Mažu vše…');
-  for (const t of [...txs]) {
-    try { await notionReq('/pages/'+t.id,'PATCH',{archived:true}); } catch(e){}
-  }
-  setInfo('Smazáno ✓'); await loadData();
+  for(const t of [...txs]){try{await notionReq('/pages/'+t.id,'PATCH',{archived:true});}catch(e){}}
+  setInfo('Smazáno ✓');await loadData();
 }
 
-function getSundays(from, to) {
-  const r=[]; let d=new Date(from); const dow=d.getDay();
+function getSundays(from,to){
+  const r=[];let d=new Date(from);const dow=d.getDay();
   d.setDate(d.getDate()+(dow===0?7:7-dow));
   const end=new Date(to);
   while(d<=end){r.push(d.toISOString().slice(0,10));d.setDate(d.getDate()+7);}
   return r;
 }
 
-async function addSundayInterests() {
-  if (!txs.length) { setInfo('Nejsou žádné transakce.'); return; }
-  const interestTxs = txs.filter(t=>t.type==='úrok');
-  const lastDate = interestTxs.length>0 ? interestTxs[interestTxs.length-1].date : txs[0].date;
-  const sundays = getSundays(lastDate, todayStr()).filter(s=>s>lastDate);
-  if (!sundays.length) { setInfo('Žádné nové neděle.'); return; }
+async function addSundayInterests(){
+  if(!txs.length){setInfo('Nejsou žádné transakce.');return;}
+  const interestTxs=txs.filter(t=>t.type==='úrok');
+  const lastDate=interestTxs.length>0?interestTxs[interestTxs.length-1].date:txs[0].date;
+  const sundays=getSundays(lastDate,todayStr()).filter(s=>s>lastDate);
+  if(!sundays.length){setInfo('Žádné nové neděle.');return;}
   setInfo('Přidávám '+sundays.length+' nedělí…');
-  for (const sun of sundays) {
-    const relevant = txs.filter(t=>t.date<sun);
-    const balBefore = relevant.length>0 ? relevant[relevant.length-1].balance : 0;
-    const interest = Math.floor(balBefore/20);
-    if (interest>0) {
-      const newBal=getCurrentBalance()+interest, newIntTotal=getCurrentInterestTotal()+interest;
+  for(const sun of sundays){
+    const relevant=txs.filter(t=>t.date<sun);
+    const balBefore=relevant.length>0?relevant[relevant.length-1].balance:0;
+    const interest=Math.floor(balBefore/20);
+    if(interest>0){
+      const newBal=getCurrentBalance()+interest,newIntTotal=getCurrentInterestTotal()+interest;
       await notionReq('/pages','POST',{parent:{database_id:DB_ID},properties:{
         'Popis':{title:[{text:{content:'úrok (⌊'+balBefore+'÷20⌋='+interest+')'}}]},
         'Datum':{date:{start:sun}},'Typ':{select:{name:'úrok'}},
@@ -290,40 +403,89 @@ async function addSundayInterests() {
   setInfo('Hotovo ✓');
 }
 
-function onTypeChange() {
-  document.getElementById('txAmount').value = document.getElementById('txType').value==='kapesné'?'20':'';
+function onTypeChange(){
+  document.getElementById('txAmount').value=document.getElementById('txType').value==='kapesné'?'20':'';
 }
 
-function render() {
-  if (!txs.length) {
+function render(){
+  if(!txs.length){
     ['bal','totalInterest','totalAllowance','nextInterest'].forEach(id=>document.getElementById(id).textContent='0,00 Kč');
     document.getElementById('ledgerWrap').innerHTML='<div class="empty">Zatím žádné transakce.</div>';
     return;
   }
-  const last=txs[txs.length-1], bal=last.balance;
+  const last=txs[txs.length-1],bal=last.balance;
+  const totalAllowance=txs.filter(t=>t.type==='kapesné').reduce((s,t)=>s+t.amount,0);
+  const totalWithdrawal=txs.filter(t=>t.type==='výběr').reduce((s,t)=>s+Math.abs(t.amount),0);
+  const totalDeposit=txs.filter(t=>t.type==='vklad').reduce((s,t)=>s+t.amount,0);
+  const totalIn=totalAllowance+totalDeposit+last.totalInterest;
+
   document.getElementById('bal').textContent=fmt(bal);
+  document.getElementById('balSub').textContent=totalWithdrawal>0?'utraceno: '+fmt(totalWithdrawal):'';
   document.getElementById('totalInterest').textContent=fmt(last.totalInterest);
-  document.getElementById('totalAllowance').textContent=fmt(txs.filter(t=>t.type==='kapesné').reduce((s,t)=>s+t.amount,0));
+  document.getElementById('interestSub').textContent=txs.filter(t=>t.type==='úrok').length+' týdnů';
+  document.getElementById('totalAllowance').textContent=fmt(totalAllowance);
+  document.getElementById('allowanceSub').textContent=txs.filter(t=>t.type==='kapesné').length+' výplat';
   document.getElementById('nextInterest').textContent=Math.floor(bal/20)+' Kč';
-  renderLedger(); renderChart();
+
+  if(totalIn>0){
+    const savedPct=Math.round((bal/totalIn)*100);
+    document.getElementById('savingsPct').textContent=savedPct+'% ušetřeno';
+    document.getElementById('savingsBarFill').style.width=Math.min(100,savedPct)+'%';
+    document.getElementById('savingsDesc').textContent='Přišlo celkem '+fmt(totalIn)+', ušetřeno '+fmt(bal)+', utraceno '+fmt(totalWithdrawal);
+  }
+
+  renderCharts();
+  renderLedger();
 }
 
-function renderLedger() {
-  const rows=[...txs].reverse().map(t=>{
-    const a=t.amount;
-    return `<tr><td>${t.date}</td><td><span class="tag t-${t.type}">${t.type}</span></td><td style="color:var(--text3)">${t.note}</td><td class="${a>=0?'pos':'neg'}" style="text-align:right">${a>=0?'+':''}${fmt(a)}</td><td style="text-align:right;font-weight:500">${fmt(t.balance)}</td><td><button class="del-btn" onclick="deleteTx('${t.id}')">✕</button></td></tr>`;
-  }).join('');
-  document.getElementById('ledgerWrap').innerHTML=`<table><thead><tr><th>Datum</th><th>Typ</th><th>Popis</th><th style="text-align:right">Částka</th><th style="text-align:right">Zůstatek</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
-}
+const cOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{maxTicksLimit:6,color:'#9e9890',font:{size:9,family:'DM Mono'}},grid:{color:'rgba(0,0,0,0.04)'}},y:{ticks:{color:'#9e9890',font:{size:9,family:'DM Mono'},callback:v=>v+' Kč'},grid:{color:'rgba(0,0,0,0.04)'}}}};
 
-function renderChart() {
-  const labels=txs.map(t=>t.date), balData=txs.map(t=>t.balance);
-  let ni=0; const noIntData=txs.map(t=>{if(t.type!=='úrok')ni+=t.amount;return ni;});
-  if(chartInst) chartInst.destroy();
-  chartInst=new Chart(document.getElementById('chart'),{type:'line',data:{labels,datasets:[
-    {label:'Zůstatek',data:balData,borderColor:'#2d7a5f',backgroundColor:'rgba(45,122,95,0.08)',fill:true,tension:0.35,pointRadius:txs.length>30?0:3,borderWidth:2},
+function mkChart(id,config){if(charts[id])charts[id].destroy();charts[id]=new Chart(document.getElementById(id),config);}
+
+function renderCharts(){
+  const f=filterByPeriod(txs,period);
+  // Balance
+  if(!f.length){mkChart('chartBalance',{type:'line',data:{labels:[],datasets:[]},options:cOpts});return;}
+  const labels=f.map(t=>t.date),balData=f.map(t=>t.balance);
+  let ni=0;const noIntData=f.map(t=>{if(t.type!=='úrok')ni+=t.amount;return ni;});
+  mkChart('chartBalance',{type:'line',data:{labels,datasets:[
+    {label:'Zůstatek',data:balData,borderColor:'#2d7a5f',backgroundColor:'rgba(45,122,95,0.08)',fill:true,tension:0.35,pointRadius:f.length>30?0:3,borderWidth:2},
     {label:'Bez úroku',data:noIntData,borderColor:'#2c5f8a',borderDash:[4,3],backgroundColor:'transparent',fill:false,tension:0.35,pointRadius:0,borderWidth:1.5}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y.toLocaleString('cs-CZ',{minimumFractionDigits:2})+' Kč'}}},scales:{x:{ticks:{maxTicksLimit:8,color:'#9e9890',font:{size:11,family:'DM Mono'}},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{color:'#9e9890',font:{size:11,family:'DM Mono'},callback:v=>v+' Kč'},grid:{color:'rgba(0,0,0,0.05)'}}}}}); 
+  ]},options:{...cOpts,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y.toLocaleString('cs-CZ',{minimumFractionDigits:2})+' Kč'}}}}});
+
+  // Interest bars
+  const iF=f.filter(t=>t.type==='úrok');
+  mkChart('chartInterest',{type:'bar',data:{labels:iF.map(t=>t.date),datasets:[{label:'Úrok',data:iF.map(t=>t.amount),backgroundColor:'rgba(45,122,95,0.7)',borderColor:'#2d7a5f',borderWidth:1,borderRadius:3}]},options:{...cOpts,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'+'+ctx.parsed.y+' Kč'}}}}});
+
+  // Donut
+  const types={kapesné:0,vklad:0,výběr:0,úrok:0};
+  f.forEach(t=>{if(t.type==='výběr')types.výběr+=Math.abs(t.amount);else if(types[t.type]!==undefined)types[t.type]+=t.amount;});
+  mkChart('chartTypes',{type:'doughnut',data:{labels:['Kapesné','Vklad','Výběr','Úrok'],datasets:[{data:[types.kapesné,types.vklad,types.výběr,types.úrok],backgroundColor:['rgba(91,74,138,0.8)','rgba(44,95,138,0.8)','rgba(192,57,43,0.8)','rgba(45,122,95,0.8)'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9,family:'DM Mono'},color:'#9e9890',padding:6,boxWidth:8}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+fmt(ctx.raw)}}}}});
+}
+
+function renderLedger(){
+  const filtered=filterByPeriod(txs,tablePeriod);
+  if(!filtered.length){document.getElementById('ledgerWrap').innerHTML='<div class="empty">Žádné transakce v tomto období.</div>';return;}
+  const rows=[...filtered].reverse().map(t=>{
+    const a=t.amount;
+    return `<tr>
+      <td>${t.date}</td>
+      <td><span class="tag t-${t.type}">${t.type}</span></td>
+      <td class="col-note" style="color:var(--text3);max-width:120px;overflow:hidden;text-overflow:ellipsis">${t.note}</td>
+      <td class="${a>=0?'pos':'neg'}" style="text-align:right">${a>=0?'+':''}${fmt(a)}</td>
+      <td style="text-align:right;font-weight:500">${fmt(t.balance)}</td>
+      <td><button class="del-btn" onclick="deleteTx('${t.id}')">✕</button></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('ledgerWrap').innerHTML=`<table>
+    <thead><tr>
+      <th>Datum</th><th>Typ</th><th class="col-note">Popis</th>
+      <th style="text-align:right">Částka</th>
+      <th style="text-align:right">Zůstatek</th>
+      <th></th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
 }
 
 document.getElementById('txDate').value=todayStr();
