@@ -19,30 +19,40 @@
   body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;padding:1.25rem 1rem}
   .page{max-width:820px;margin:0 auto}
 
-  /* HEADER */
   .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1.5px solid var(--border);gap:10px;flex-wrap:wrap}
   .header h1{font-size:1.4rem;font-weight:600;letter-spacing:-.03em}
   .header p{font-size:12px;color:var(--text3);margin-top:2px;font-family:var(--mono)}
   .badge{font-size:11px;font-family:var(--mono);padding:4px 10px;border-radius:20px;border:1px solid var(--border);color:var(--text3);white-space:nowrap}
   .badge.ok{color:var(--green);border-color:var(--green)}.badge.err{color:var(--red);border-color:var(--red)}
 
-  /* CARDS — 4 na desktop, 2×2 na mobil */
-  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.1rem}
   .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem}
   .card-label{font-size:10px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
   .card-value{font-size:1.15rem;font-weight:600;font-family:var(--mono);letter-spacing:-.02em;line-height:1.2}
   .card-value.green{color:var(--green)}.card-value.blue{color:var(--blue)}.card-value.amber{color:var(--amber)}
   .card-sub{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:3px}
 
-  /* BOX */
   .box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;margin-bottom:1.1rem}
   .box-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.875rem;flex-wrap:wrap;gap:8px}
-  .section-title{font-size:11px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--text3)}
+  .section-title{font-size:11px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--text3);cursor:pointer;user-select:none;display:flex;align-items:center;gap:6px}
+  .section-title .toggle-arrow{font-size:9px;transition:transform .2s;display:inline-block}
+  .section-title.collapsed .toggle-arrow{transform:rotate(-90deg)}
+  .collapsible-content{overflow:hidden;transition:max-height .3s ease,opacity .2s;max-height:2000px;opacity:1}
+  .collapsible-content.hidden{max-height:0;opacity:0;pointer-events:none}
 
-  /* SPOŘENÍ BAR */
+  /* SPOŘENÍ */
   .savings-bar-label{display:flex;justify-content:space-between;font-size:10px;font-family:var(--mono);color:var(--text3);margin-bottom:5px}
   .savings-bar{height:7px;background:var(--surface2);border-radius:4px;overflow:hidden}
   .savings-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),#4db88a);border-radius:4px;transition:width .5s ease}
+
+  /* CÍL */
+  .goal-section{margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+  .goal-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+  .goal-row input{height:32px;font-size:12px;max-width:130px}
+  .goal-bar{height:12px;background:var(--surface2);border-radius:6px;overflow:hidden;margin-bottom:6px}
+  .goal-bar-fill{height:100%;background:linear-gradient(90deg,var(--amber),#f0a050);border-radius:6px;transition:width .6s ease}
+  .goal-info{font-size:11px;font-family:var(--mono);color:var(--text3)}
+  .goal-info strong{color:var(--amber)}
 
   /* GRAFY */
   .chart-wrap{position:relative;height:185px}
@@ -52,7 +62,6 @@
   .legend span{display:flex;align-items:center;gap:4px}
   .dot{width:7px;height:7px;border-radius:2px;flex-shrink:0}
 
-  /* PERIOD TABS */
   .period-tabs{display:flex;gap:3px;flex-wrap:wrap}
   .ptab{height:26px;padding:0 10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;color:var(--text3);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .15s;white-space:nowrap}
   .ptab:hover{background:var(--surface2);color:var(--text2)}
@@ -62,13 +71,14 @@
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
   .form-grid .fg-full{grid-column:1/-1}
   .fg label{display:block;font-size:10px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-  input,select{width:100%;height:38px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);font-family:var(--mono);font-size:13px;padding:0 10px;outline:none;transition:border-color .15s}
-  input:focus,select:focus{border-color:var(--text2);background:var(--surface)}
+  input[type=text],input[type=number],input[type=date],input[type=password],select{width:100%;height:38px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);font-family:var(--mono);font-size:13px;padding:0 10px;outline:none;transition:border-color .15s}
+  input[type=text]:focus,input[type=number]:focus,input[type=date]:focus,input[type=password]:focus,select:focus{border-color:var(--text2);background:var(--surface)}
   .btn{height:38px;padding:0 14px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--mono);font-size:12px;cursor:pointer;white-space:nowrap;transition:all .15s}
   .btn:hover{border-color:var(--text2);color:var(--text);background:var(--surface2)}
   .btn:disabled{opacity:.4;cursor:not-allowed}
   .btn.primary{background:var(--text);border-color:var(--text);color:var(--bg);font-weight:500;width:100%}
   .btn.primary:hover{background:#333}
+  .btn.sm{height:32px;font-size:11px;padding:0 10px}
   .btn.danger{color:var(--red);border-color:var(--red)}.btn.danger:hover{background:var(--red-light)}
   .btn.amber{color:var(--amber);border-color:var(--amber)}.btn.amber:hover{background:var(--amber-light)}
   .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
@@ -79,7 +89,7 @@
   .ledger-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
   .ledger-hdr{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
   .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  table{width:100%;border-collapse:collapse;font-size:12px;min-width:420px}
+  table{width:100%;border-collapse:collapse;font-size:12px;min-width:400px}
   th{font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);background:var(--bg);white-space:nowrap}
   td{padding:8px 10px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11px;white-space:nowrap}
   tr:last-child td{border-bottom:none}
@@ -94,7 +104,6 @@
   .del-btn:hover{color:var(--red);background:var(--red-light)}
   .empty{text-align:center;padding:2rem;font-family:var(--mono);font-size:12px;color:var(--text3)}
 
-  /* SETUP */
   .setup{background:var(--amber-light);border:1px solid #e8c080;border-radius:var(--radius);padding:1rem;margin-bottom:1.25rem;font-size:13px;line-height:1.7}
   .setup code{background:rgba(0,0,0,0.08);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:11px}
   .setup a{color:var(--amber)}
@@ -102,24 +111,25 @@
   .setup-row input{flex:1;min-width:200px;font-size:12px;height:34px;background:var(--surface)}
   .setup-row .btn{height:34px}
 
-  /* RESPONSIVE */
   @media(max-width:600px){
     body{padding:1rem .75rem}
     .cards{grid-template-columns:repeat(2,1fr);gap:8px}
-    .card-value{font-size:1.05rem}
+    .card-value{font-size:1rem}
     .charts-grid{grid-template-columns:1fr}
-    .chart-wrap{height:170px}
-    .chart-wrap.tall{height:200px}
-    /* tabulka — na mobilu skryjeme sloupec Popis */
+    .chart-wrap{height:160px}
+    .chart-wrap.tall{height:190px}
     .col-note{display:none}
-    table{min-width:320px}
+    table{min-width:300px}
     .ledger-hdr{flex-direction:column;align-items:flex-start}
     .period-tabs{width:100%}
     .ptab{flex:1;text-align:center}
+    /* FIX: formulář — datum a typ pod sebou */
+    .form-grid{grid-template-columns:1fr}
+    .form-grid .fg-full{grid-column:1}
   }
   @media(max-width:380px){
-    .header h1{font-size:1.2rem}
-    .card-value{font-size:.95rem}
+    .header h1{font-size:1.1rem}
+    .card-value{font-size:.9rem}
   }
 </style>
 </head>
@@ -172,87 +182,132 @@
     </div>
   </div>
 
-  <!-- Progress bar spoření -->
-  <div class="box" id="savingsBox">
+  <!-- Spoření + Cíl -->
+  <div class="box">
     <div class="box-header">
-      <span class="section-title">Jak moc spoříš?</span>
+      <span class="section-title" onclick="toggleSection('savings')">
+        <span class="toggle-arrow">▾</span> Jak moc spoříš?
+        <span style="font-size:10px;color:var(--text3);font-weight:400;margin-left:4px" id="periodLabel"></span>
+      </span>
       <span id="savingsPct" style="font-size:12px;font-family:var(--mono);color:var(--green);font-weight:500"></span>
     </div>
-    <div class="savings-bar-label"><span>utraceno</span><span>ušetřeno</span></div>
-    <div class="savings-bar"><div class="savings-bar-fill" id="savingsBarFill" style="width:0%"></div></div>
-    <div style="margin-top:7px;font-size:10px;font-family:var(--mono);color:var(--text3)" id="savingsDesc"></div>
+    <div class="collapsible-content" id="savings-content">
+      <div class="savings-bar-label"><span>utraceno</span><span>ušetřeno</span></div>
+      <div class="savings-bar"><div class="savings-bar-fill" id="savingsBarFill" style="width:0%"></div></div>
+      <div style="margin-top:7px;font-size:10px;font-family:var(--mono);color:var(--text3)" id="savingsDesc"></div>
+
+      <div class="goal-section">
+        <div style="font-size:10px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Cíl spoření</div>
+        <div class="goal-row">
+          <input type="number" id="goalInput" placeholder="Zadej cíl v Kč" style="max-width:160px;height:32px;font-size:12px" oninput="updateGoal()">
+          <span style="font-size:11px;font-family:var(--mono);color:var(--text3)" id="goalHint"></span>
+        </div>
+        <div id="goalBarWrap" style="display:none">
+          <div class="goal-bar"><div class="goal-bar-fill" id="goalBarFill" style="width:0%"></div></div>
+          <div class="goal-info" id="goalInfo"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Graf zůstatku -->
   <div class="box">
     <div class="box-header">
-      <span class="section-title">Vývoj zůstatku</span>
-      <div class="period-tabs">
-        <button class="ptab" onclick="setPeriod('7')" data-p="7">7 dní</button>
-        <button class="ptab" onclick="setPeriod('30')" data-p="30">30 dní</button>
-        <button class="ptab" onclick="setPeriod('90')" data-p="90">3 měs.</button>
-        <button class="ptab active" onclick="setPeriod('all')" data-p="all">Vše</button>
+      <span class="section-title" onclick="toggleSection('balance')">
+        <span class="toggle-arrow">▾</span> Vývoj zůstatku
+      </span>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <div class="period-tabs">
+          <button class="ptab" onclick="setPeriod('7')" data-p="7">7 dní</button>
+          <button class="ptab" onclick="setPeriod('30')" data-p="30">30 dní</button>
+          <button class="ptab" onclick="setPeriod('90')" data-p="90">3 měs.</button>
+          <button class="ptab active" onclick="setPeriod('all')" data-p="all">Vše</button>
+        </div>
       </div>
     </div>
-    <div class="chart-wrap tall"><canvas id="chartBalance"></canvas></div>
-    <div class="legend">
-      <span><span class="dot" style="background:#2d7a5f"></span>zůstatek</span>
-      <span><span class="dot" style="background:#2c5f8a;height:2px;border-radius:0"></span>bez úroku</span>
+    <div class="collapsible-content" id="balance-content">
+      <div class="chart-wrap tall"><canvas id="chartBalance"></canvas></div>
+      <div class="legend">
+        <span><span class="dot" style="background:#2d7a5f"></span>zůstatek</span>
+        <span><span class="dot" style="background:rgba(181,96,10,0.7);height:2px;border-radius:0"></span>úrok týdně</span>
+      </div>
     </div>
   </div>
 
   <!-- Dva menší grafy -->
   <div class="charts-grid">
     <div class="box" style="margin-bottom:0">
-      <div class="box-header"><span class="section-title">Týdenní úroky</span></div>
-      <div class="chart-wrap"><canvas id="chartInterest"></canvas></div>
+      <div class="box-header">
+        <span class="section-title" onclick="toggleSection('interest')">
+          <span class="toggle-arrow">▾</span> Týdenní úroky
+        </span>
+      </div>
+      <div class="collapsible-content" id="interest-content">
+        <div class="chart-wrap"><canvas id="chartInterest"></canvas></div>
+      </div>
     </div>
     <div class="box" style="margin-bottom:0">
-      <div class="box-header"><span class="section-title">Typy transakcí</span></div>
-      <div class="chart-wrap"><canvas id="chartTypes"></canvas></div>
+      <div class="box-header">
+        <span class="section-title" onclick="toggleSection('types')">
+          <span class="toggle-arrow">▾</span> Typy transakcí
+        </span>
+      </div>
+      <div class="collapsible-content" id="types-content">
+        <div class="chart-wrap"><canvas id="chartTypes"></canvas></div>
+      </div>
     </div>
   </div>
   <div style="margin-bottom:1.1rem"></div>
 
   <!-- Formulář -->
   <div class="box">
-    <div class="section-title" style="margin-bottom:.875rem">Přidat transakci</div>
-    <div class="form-grid">
-      <div class="fg"><label>Datum</label><input type="date" id="txDate"></div>
-      <div class="fg"><label>Typ</label>
-        <select id="txType" onchange="onTypeChange()">
-          <option value="kapesné">Kapesné (+20 Kč)</option>
-          <option value="vklad">Vklad</option>
-          <option value="výběr">Výběr</option>
-          <option value="úrok">Úrok (ručně)</option>
-        </select>
+    <div class="box-header">
+      <span class="section-title" onclick="toggleSection('form')">
+        <span class="toggle-arrow">▾</span> Přidat transakci
+      </span>
+    </div>
+    <div class="collapsible-content" id="form-content">
+      <div class="form-grid">
+        <div class="fg"><label>Datum</label><input type="date" id="txDate"></div>
+        <div class="fg"><label>Typ</label>
+          <select id="txType" onchange="onTypeChange()">
+            <option value="kapesné">Kapesné (+20 Kč)</option>
+            <option value="vklad">Vklad</option>
+            <option value="výběr">Výběr</option>
+            <option value="úrok">Úrok (ručně)</option>
+          </select>
+        </div>
+        <div class="fg"><label>Částka (Kč)</label><input type="number" id="txAmount" value="20" min="0" step="1"></div>
+        <div class="fg"><label>Popis</label><input type="text" id="txNote" placeholder="kapesné, uklizení…"></div>
+        <div class="fg fg-full"><button class="btn primary" id="addBtn" onclick="addTx()">+ Přidat transakci</button></div>
       </div>
-      <div class="fg"><label>Částka (Kč)</label><input type="number" id="txAmount" value="20" min="0" step="1"></div>
-      <div class="fg"><label>Popis</label><input type="text" id="txNote" placeholder="kapesné, uklizení…"></div>
-      <div class="fg fg-full"><button class="btn primary" id="addBtn" onclick="addTx()">+ Přidat transakci</button></div>
+      <div class="btn-row">
+        <button class="btn amber" onclick="addSundayInterests()">↻ Dopočítat neděle</button>
+        <button class="btn" onclick="loadData()">⟳ Obnovit</button>
+      </div>
+      <div class="info" id="infoBar">Úrok = ⌊zůstatek ÷ 20⌋ Kč, každou neděli.</div>
     </div>
-    <div class="btn-row">
-      <button class="btn amber" onclick="addSundayInterests()">↻ Dopočítat neděle</button>
-      <button class="btn" onclick="loadData()">⟳ Obnovit</button>
-    </div>
-    <div class="info" id="infoBar">Úrok = ⌊zůstatek ÷ 20⌋ Kč, každou neděli.</div>
   </div>
 
   <!-- Tabulka -->
   <div class="ledger-section">
     <div class="ledger-hdr">
-      <span class="section-title">Přehled transakcí</span>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;width:100%;justify-content:space-between">
+      <span class="section-title" onclick="toggleSection('ledger')">
+        <span class="toggle-arrow">▾</span> Přehled transakcí
+      </span>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <div class="period-tabs">
           <button class="ptab active" onclick="setTablePeriod('all')" data-tp="all">Vše</button>
           <button class="ptab" onclick="setTablePeriod('30')" data-tp="30">30 dní</button>
           <button class="ptab" onclick="setTablePeriod('7')" data-tp="7">7 dní</button>
         </div>
-        <button class="btn danger" onclick="clearAll()">Smazat vše</button>
+        <button class="btn danger sm" onclick="clearAll()">Smazat vše</button>
       </div>
     </div>
-    <div class="table-wrap">
-      <div id="ledgerWrap"><div class="empty">načítám…</div></div>
+    <div class="collapsible-content" id="ledger-content">
+      <div class="table-wrap">
+        <div id="ledgerWrap"><div class="empty">načítám…</div></div>
+      </div>
     </div>
   </div>
 
@@ -261,14 +316,28 @@
 const DB_ID='9266cc0cf54f47ef8fcdca1c06dc1051';
 const PROXY='https://snowy-bonus-0966.michalnozicka7.workers.dev';
 const TOKEN_KEY='adamova_banka_token';
+const GOAL_KEY='adamova_banka_goal';
 let token=localStorage.getItem(TOKEN_KEY)||'';
 let txs=[],period='all',tablePeriod='all',charts={};
+let goalAmount=parseFloat(localStorage.getItem(GOAL_KEY))||0;
 
 const fmt=n=>parseFloat(n).toLocaleString('cs-CZ',{minimumFractionDigits:2,maximumFractionDigits:2})+' Kč';
 const todayStr=()=>new Date().toISOString().slice(0,10);
 const setInfo=msg=>document.getElementById('infoBar').textContent=msg;
 const setBadge=(cls,msg)=>{const b=document.getElementById('badge');b.textContent='⬤ '+msg;b.className='badge '+(cls||'');};
 
+// --- TOGGLE sekce ---
+const sectionState={};
+function toggleSection(id){
+  const content=document.getElementById(id+'-content');
+  const title=content.previousElementSibling.querySelector('.section-title')||content.previousElementSibling;
+  const arrow=content.parentElement.querySelector('.toggle-arrow');
+  const hidden=content.classList.toggle('hidden');
+  if(arrow) arrow.style.transform=hidden?'rotate(-90deg)':'rotate(0deg)';
+  sectionState[id]=!hidden;
+}
+
+// --- TOKEN ---
 function saveToken(){
   const val=document.getElementById('tokenInput').value.trim();
   if(!val)return;
@@ -277,6 +346,7 @@ function saveToken(){
   loadData();
 }
 
+// --- API ---
 async function notionReq(path,method='GET',payload=null){
   const res=await fetch(PROXY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path,method,payload,token})});
   const data=await res.json();
@@ -305,6 +375,7 @@ async function loadData(){
   }
 }
 
+// --- FILTR ---
 function filterByPeriod(data,days){
   if(days==='all')return data;
   const cutoff=new Date();cutoff.setDate(cutoff.getDate()-parseInt(days));
@@ -316,6 +387,7 @@ function setPeriod(p){
   period=p;
   document.querySelectorAll('.ptab[data-p]').forEach(b=>b.classList.toggle('active',b.dataset.p===p));
   renderCharts();
+  renderSavings();
 }
 
 function setTablePeriod(p){
@@ -327,6 +399,7 @@ function setTablePeriod(p){
 const getCurrentBalance=()=>txs.length>0?txs[txs.length-1].balance:0;
 const getCurrentInterestTotal=()=>txs.length>0?txs[txs.length-1].totalInterest:0;
 
+// --- TRANSAKCE ---
 async function addTx(){
   const date=document.getElementById('txDate').value||todayStr();
   const type=document.getElementById('txType').value;
@@ -407,6 +480,60 @@ function onTypeChange(){
   document.getElementById('txAmount').value=document.getElementById('txType').value==='kapesné'?'20':'';
 }
 
+// --- CÍL ---
+function updateGoal(){
+  goalAmount=parseFloat(document.getElementById('goalInput').value)||0;
+  localStorage.setItem(GOAL_KEY,goalAmount);
+  renderGoal();
+}
+
+function renderGoal(){
+  const bal=getCurrentBalance();
+  const wrap=document.getElementById('goalBarWrap');
+  if(!goalAmount||goalAmount<=0){wrap.style.display='none';document.getElementById('goalHint').textContent='';return;}
+  wrap.style.display='block';
+  const pct=Math.min(100,Math.round((bal/goalAmount)*100));
+  document.getElementById('goalBarFill').style.width=pct+'%';
+
+  // Odhadovaný čas složeným úročením
+  // Každou neděli: bal += floor(bal/20), plus 20 Kč kapesné
+  let simBal=bal, weeks=0, maxWeeks=520;
+  while(simBal<goalAmount&&weeks<maxWeeks){
+    simBal+=20; // kapesné
+    simBal+=Math.floor(simBal/20); // úrok
+    weeks++;
+  }
+  const months=(weeks/4.33).toFixed(1);
+  const etaText=weeks>=maxWeeks?'více než 10 let':(weeks<8?weeks+' týdnů':months+' měsíců');
+
+  document.getElementById('goalInfo').innerHTML=
+    '<strong>'+pct+'%</strong> cíle dosaženo — '+fmt(bal)+' z '+fmt(goalAmount)+
+    (weeks<maxWeeks&&pct<100?' · při spoření odhadem <strong>'+etaText+'</strong>':'')+'';
+  document.getElementById('goalHint').textContent=pct>=100?'🎉 Cíl splněn!':'';
+}
+
+// --- SPOŘENÍ dle filtru ---
+function renderSavings(){
+  const filtered=filterByPeriod(txs,period);
+  const periodNames={'7':'za 7 dní','30':'za 30 dní','90':'za 3 měsíce','all':''};
+  document.getElementById('periodLabel').textContent=periodNames[period]||'';
+
+  const totalAllowance=filtered.filter(t=>t.type==='kapesné').reduce((s,t)=>s+t.amount,0);
+  const totalDeposit=filtered.filter(t=>t.type==='vklad').reduce((s,t)=>s+t.amount,0);
+  const totalInterestF=filtered.filter(t=>t.type==='úrok').reduce((s,t)=>s+t.amount,0);
+  const totalWithdrawal=filtered.filter(t=>t.type==='výběr').reduce((s,t)=>s+Math.abs(t.amount),0);
+  const totalIn=totalAllowance+totalDeposit+totalInterestF;
+
+  // "ušetřeno" = co přišlo minus co se vybralo v tomto období
+  const saved=totalIn-totalWithdrawal;
+  const savedPct=totalIn>0?Math.max(0,Math.round((saved/totalIn)*100)):0;
+  document.getElementById('savingsPct').textContent=savedPct+'% ušetřeno';
+  document.getElementById('savingsBarFill').style.width=Math.min(100,savedPct)+'%';
+  document.getElementById('savingsDesc').textContent=
+    'Přišlo '+fmt(totalIn)+', utraceno '+fmt(totalWithdrawal)+', ušetřeno '+fmt(Math.max(0,saved));
+}
+
+// --- RENDER ---
 function render(){
   if(!txs.length){
     ['bal','totalInterest','totalAllowance','nextInterest'].forEach(id=>document.getElementById(id).textContent='0,00 Kč');
@@ -416,8 +543,6 @@ function render(){
   const last=txs[txs.length-1],bal=last.balance;
   const totalAllowance=txs.filter(t=>t.type==='kapesné').reduce((s,t)=>s+t.amount,0);
   const totalWithdrawal=txs.filter(t=>t.type==='výběr').reduce((s,t)=>s+Math.abs(t.amount),0);
-  const totalDeposit=txs.filter(t=>t.type==='vklad').reduce((s,t)=>s+t.amount,0);
-  const totalIn=totalAllowance+totalDeposit+last.totalInterest;
 
   document.getElementById('bal').textContent=fmt(bal);
   document.getElementById('balSub').textContent=totalWithdrawal>0?'utraceno: '+fmt(totalWithdrawal):'';
@@ -427,37 +552,53 @@ function render(){
   document.getElementById('allowanceSub').textContent=txs.filter(t=>t.type==='kapesné').length+' výplat';
   document.getElementById('nextInterest').textContent=Math.floor(bal/20)+' Kč';
 
-  if(totalIn>0){
-    const savedPct=Math.round((bal/totalIn)*100);
-    document.getElementById('savingsPct').textContent=savedPct+'% ušetřeno';
-    document.getElementById('savingsBarFill').style.width=Math.min(100,savedPct)+'%';
-    document.getElementById('savingsDesc').textContent='Přišlo celkem '+fmt(totalIn)+', ušetřeno '+fmt(bal)+', utraceno '+fmt(totalWithdrawal);
-  }
-
+  renderSavings();
+  renderGoal();
   renderCharts();
   renderLedger();
 }
 
-const cOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{maxTicksLimit:6,color:'#9e9890',font:{size:9,family:'DM Mono'}},grid:{color:'rgba(0,0,0,0.04)'}},y:{ticks:{color:'#9e9890',font:{size:9,family:'DM Mono'},callback:v=>v+' Kč'},grid:{color:'rgba(0,0,0,0.04)'}}}};
+// --- GRAFY ---
+const cOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{
+  x:{ticks:{maxTicksLimit:6,color:'#9e9890',font:{size:9,family:'DM Mono'}},grid:{color:'rgba(0,0,0,0.04)'}},
+  y:{ticks:{color:'#9e9890',font:{size:9,family:'DM Mono'},callback:v=>v+' Kč'},grid:{color:'rgba(0,0,0,0.04)'}}
+}};
 
 function mkChart(id,config){if(charts[id])charts[id].destroy();charts[id]=new Chart(document.getElementById(id),config);}
 
 function renderCharts(){
   const f=filterByPeriod(txs,period);
-  // Balance
-  if(!f.length){mkChart('chartBalance',{type:'line',data:{labels:[],datasets:[]},options:cOpts});return;}
-  const labels=f.map(t=>t.date),balData=f.map(t=>t.balance);
-  let ni=0;const noIntData=f.map(t=>{if(t.type!=='úrok')ni+=t.amount;return ni;});
-  mkChart('chartBalance',{type:'line',data:{labels,datasets:[
-    {label:'Zůstatek',data:balData,borderColor:'#2d7a5f',backgroundColor:'rgba(45,122,95,0.08)',fill:true,tension:0.35,pointRadius:f.length>30?0:3,borderWidth:2},
-    {label:'Bez úroku',data:noIntData,borderColor:'#2c5f8a',borderDash:[4,3],backgroundColor:'transparent',fill:false,tension:0.35,pointRadius:0,borderWidth:1.5}
-  ]},options:{...cOpts,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y.toLocaleString('cs-CZ',{minimumFractionDigits:2})+' Kč'}}}}});
+  if(!f.length){
+    ['chartBalance','chartInterest','chartTypes'].forEach(id=>mkChart(id,{type:'line',data:{labels:[],datasets:[]},options:cOpts}));
+    return;
+  }
 
-  // Interest bars
+  // BALANCE + úrok jako sekundární osa (bar)
+  const labels=f.map(t=>t.date);
+  const balData=f.map(t=>t.balance);
+  const interestData=f.map(t=>t.type==='úrok'?t.amount:null);
+
+  mkChart('chartBalance',{type:'bar',data:{labels,datasets:[
+    {type:'line',label:'Zůstatek',data:balData,borderColor:'#2d7a5f',backgroundColor:'rgba(45,122,95,0.07)',fill:true,tension:0.35,pointRadius:f.length>30?0:3,borderWidth:2,yAxisID:'y',order:1},
+    {type:'bar',label:'Úrok',data:interestData,backgroundColor:'rgba(181,96,10,0.55)',borderColor:'rgba(181,96,10,0.8)',borderWidth:1,borderRadius:3,yAxisID:'y2',order:2}
+  ]},options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{
+      if(ctx.dataset.label==='Úrok'&&ctx.raw===null)return null;
+      return ctx.dataset.label+': '+(ctx.raw!==null?ctx.parsed.y.toLocaleString('cs-CZ',{minimumFractionDigits:2})+' Kč':'—');
+    }}}},
+    scales:{
+      x:{ticks:{maxTicksLimit:6,color:'#9e9890',font:{size:9,family:'DM Mono'}},grid:{color:'rgba(0,0,0,0.04)'}},
+      y:{position:'left',ticks:{color:'#2d7a5f',font:{size:9,family:'DM Mono'},callback:v=>v+' Kč'},grid:{color:'rgba(0,0,0,0.04)'}},
+      y2:{position:'right',ticks:{color:'rgba(181,96,10,0.8)',font:{size:9,family:'DM Mono'},callback:v=>'+'+v+' Kč'},grid:{display:false}}
+    }
+  }});
+
+  // INTEREST bars
   const iF=f.filter(t=>t.type==='úrok');
   mkChart('chartInterest',{type:'bar',data:{labels:iF.map(t=>t.date),datasets:[{label:'Úrok',data:iF.map(t=>t.amount),backgroundColor:'rgba(45,122,95,0.7)',borderColor:'#2d7a5f',borderWidth:1,borderRadius:3}]},options:{...cOpts,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'+'+ctx.parsed.y+' Kč'}}}}});
 
-  // Donut
+  // DONUT
   const types={kapesné:0,vklad:0,výběr:0,úrok:0};
   f.forEach(t=>{if(t.type==='výběr')types.výběr+=Math.abs(t.amount);else if(types[t.type]!==undefined)types[t.type]+=t.amount;});
   mkChart('chartTypes',{type:'doughnut',data:{labels:['Kapesné','Vklad','Výběr','Úrok'],datasets:[{data:[types.kapesné,types.vklad,types.výběr,types.úrok],backgroundColor:['rgba(91,74,138,0.8)','rgba(44,95,138,0.8)','rgba(192,57,43,0.8)','rgba(45,122,95,0.8)'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9,family:'DM Mono'},color:'#9e9890',padding:6,boxWidth:8}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+fmt(ctx.raw)}}}}});
@@ -468,27 +609,14 @@ function renderLedger(){
   if(!filtered.length){document.getElementById('ledgerWrap').innerHTML='<div class="empty">Žádné transakce v tomto období.</div>';return;}
   const rows=[...filtered].reverse().map(t=>{
     const a=t.amount;
-    return `<tr>
-      <td>${t.date}</td>
-      <td><span class="tag t-${t.type}">${t.type}</span></td>
-      <td class="col-note" style="color:var(--text3);max-width:120px;overflow:hidden;text-overflow:ellipsis">${t.note}</td>
-      <td class="${a>=0?'pos':'neg'}" style="text-align:right">${a>=0?'+':''}${fmt(a)}</td>
-      <td style="text-align:right;font-weight:500">${fmt(t.balance)}</td>
-      <td><button class="del-btn" onclick="deleteTx('${t.id}')">✕</button></td>
-    </tr>`;
+    return `<tr><td>${t.date}</td><td><span class="tag t-${t.type}">${t.type}</span></td><td class="col-note" style="color:var(--text3)">${t.note}</td><td class="${a>=0?'pos':'neg'}" style="text-align:right">${a>=0?'+':''}${fmt(a)}</td><td style="text-align:right;font-weight:500">${fmt(t.balance)}</td><td><button class="del-btn" onclick="deleteTx('${t.id}')">✕</button></td></tr>`;
   }).join('');
-  document.getElementById('ledgerWrap').innerHTML=`<table>
-    <thead><tr>
-      <th>Datum</th><th>Typ</th><th class="col-note">Popis</th>
-      <th style="text-align:right">Částka</th>
-      <th style="text-align:right">Zůstatek</th>
-      <th></th>
-    </tr></thead>
-    <tbody>${rows}</tbody>
-  </table>`;
+  document.getElementById('ledgerWrap').innerHTML=`<table><thead><tr><th>Datum</th><th>Typ</th><th class="col-note">Popis</th><th style="text-align:right">Částka</th><th style="text-align:right">Zůstatek</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
+// --- INIT ---
 document.getElementById('txDate').value=todayStr();
+if(goalAmount>0)document.getElementById('goalInput').value=goalAmount;
 if(token){loadData();}else{document.getElementById('setupDiv').style.display='block';setBadge('err','bez tokenu');document.getElementById('ledgerWrap').innerHTML='<div class="empty">Nastav Notion token výše.</div>';}
 </script>
 </body>
