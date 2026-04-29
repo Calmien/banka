@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Synova Banka</title>
+<title>Adamova Banka</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
@@ -75,7 +75,7 @@
 <div class="page">
   <div class="header">
     <div>
-      <h1>🏦 Synova banka</h1>
+      <h1>🏦 Adamova banka</h1>
       <p id="lastUpdate">načítám…</p>
     </div>
     <span class="badge" id="badge">⬤ připojuji</span>
@@ -84,9 +84,10 @@
   <div id="setupDiv" class="setup" style="display:none">
     <strong>⚙ Nastav Notion Integration Token</strong><br>
     1. Jdi na <a href="https://www.notion.so/my-integrations" target="_blank">notion.so/my-integrations</a> → <strong>+ New integration</strong><br>
-    2. Název: <code>Synova Banka</code> → Associated workspace: vyber svůj → <strong>Save</strong><br>
+    2. Název: <code>Adamova Banka</code>, vyber workspace → <strong>Save</strong><br>
     3. Zkopíruj <strong>Internal Integration Secret</strong> (začíná <code>ntn_</code>)<br>
-    4. Vlož token sem:
+    4. V Notion otevři stránku <strong>Adamova Banka</strong> → ⋯ → <strong>Connections</strong> → připoj integraci<br>
+    5. Vlož token sem:
     <div class="setup-row">
       <input type="password" id="tokenInput" placeholder="ntn_XXXXXXXXXXXXXXXX">
       <button class="btn primary" onclick="saveToken()">Uložit</button>
@@ -144,7 +145,9 @@
 
 <script>
 const DB_ID = '9266cc0cf54f47ef8fcdca1c06dc1051';
-const TOKEN_KEY = 'synova_notion_token';
+const PROXY = 'https://snowy-bonus-0966.michalnozicka7.workers.dev';
+const TOKEN_KEY = 'adamova_banka_token';
+
 let token = localStorage.getItem(TOKEN_KEY) || '';
 let txs = [];
 let chartInst = null;
@@ -162,22 +165,29 @@ function saveToken() {
   loadData();
 }
 
-async function notionReq(path, method='GET', body=null) {
-  const res = await fetch('https://api.notion.com/v1'+path, {
-    method,
-    headers: { 'Authorization':'Bearer '+token, 'Notion-Version':'2022-06-28', 'Content-Type':'application/json' },
-    ...(body ? {body:JSON.stringify(body)} : {})
+async function notionReq(path, method='GET', payload=null) {
+  const res = await fetch(PROXY, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ path, method, payload, token })
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message||'Notion error '+res.status);
+  if (data.object === 'error' || data.error) throw new Error(data.message || data.error || 'Notion error');
   return data;
 }
 
 async function loadData() {
-  if (!token) { document.getElementById('setupDiv').style.display='block'; setBadge('err','bez tokenu'); document.getElementById('ledgerWrap').innerHTML='<div class="empty">Nastav token výše.</div>'; return; }
+  if (!token) {
+    document.getElementById('setupDiv').style.display='block';
+    setBadge('err','bez tokenu');
+    document.getElementById('ledgerWrap').innerHTML='<div class="empty">Nastav token výše.</div>';
+    return;
+  }
   try {
     setBadge('','načítám…'); setInfo('Načítám z Notion…');
-    const data = await notionReq('/databases/'+DB_ID+'/query','POST',{ sorts:[{property:'Datum',direction:'ascending'}], page_size:100 });
+    const data = await notionReq('/databases/'+DB_ID+'/query','POST',{
+      sorts:[{property:'Datum',direction:'ascending'}], page_size:100
+    });
     txs = data.results.map(p=>({
       id: p.id,
       date: p.properties['Datum']?.date?.start||'',
@@ -191,7 +201,7 @@ async function loadData() {
     setBadge('ok','notion připojen'); setInfo('Načteno ✓'); render();
   } catch(e) {
     setBadge('err','chyba'); setInfo('Chyba: '+e.message);
-    if (e.message.includes('401')||e.message.includes('token')||e.message.includes('unauthorized')) document.getElementById('setupDiv').style.display='block';
+    if (e.message.includes('401')||e.message.includes('Unauthorized')) document.getElementById('setupDiv').style.display='block';
   }
 }
 
@@ -230,13 +240,12 @@ async function deleteTx(id) {
   try {
     await notionReq('/pages/'+id,'PATCH',{archived:true});
     await loadData();
-    // přepočítej zůstatky
     let bal=0, intTotal=0;
     for (const t of txs) {
       bal+=t.amount; if(t.type==='úrok') intTotal+=t.amount;
       await notionReq('/pages/'+t.id,'PATCH',{properties:{'Zůstatek':{number:bal},'Úrok celkem':{number:intTotal}}});
     }
-    setInfo('Smazáno a přepočítáno ✓'); await loadData();
+    setInfo('Smazáno ✓'); await loadData();
   } catch(e) { setInfo('Chyba: '+e.message); }
 }
 
@@ -286,7 +295,11 @@ function onTypeChange() {
 }
 
 function render() {
-  if (!txs.length) { ['bal','totalInterest','totalAllowance','nextInterest'].forEach(id=>document.getElementById(id).textContent='0,00 Kč'); document.getElementById('ledgerWrap').innerHTML='<div class="empty">Zatím žádné transakce.</div>'; return; }
+  if (!txs.length) {
+    ['bal','totalInterest','totalAllowance','nextInterest'].forEach(id=>document.getElementById(id).textContent='0,00 Kč');
+    document.getElementById('ledgerWrap').innerHTML='<div class="empty">Zatím žádné transakce.</div>';
+    return;
+  }
   const last=txs[txs.length-1], bal=last.balance;
   document.getElementById('bal').textContent=fmt(bal);
   document.getElementById('totalInterest').textContent=fmt(last.totalInterest);
@@ -310,7 +323,7 @@ function renderChart() {
   chartInst=new Chart(document.getElementById('chart'),{type:'line',data:{labels,datasets:[
     {label:'Zůstatek',data:balData,borderColor:'#2d7a5f',backgroundColor:'rgba(45,122,95,0.08)',fill:true,tension:0.35,pointRadius:txs.length>30?0:3,borderWidth:2},
     {label:'Bez úroku',data:noIntData,borderColor:'#2c5f8a',borderDash:[4,3],backgroundColor:'transparent',fill:false,tension:0.35,pointRadius:0,borderWidth:1.5}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y.toLocaleString('cs-CZ',{minimumFractionDigits:2})+' Kč'}}},scales:{x:{ticks:{maxTicksLimit:8,color:'#9e9890',font:{size:11,family:'DM Mono'}},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{color:'#9e9890',font:{size:11,family:'DM Mono'},callback:v=>v+' Kč'},grid:{color:'rgba(0,0,0,0.05)'}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y.toLocaleString('cs-CZ',{minimumFractionDigits:2})+' Kč'}}},scales:{x:{ticks:{maxTicksLimit:8,color:'#9e9890',font:{size:11,family:'DM Mono'}},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{color:'#9e9890',font:{size:11,family:'DM Mono'},callback:v=>v+' Kč'},grid:{color:'rgba(0,0,0,0.05)'}}}}}); 
 }
 
 document.getElementById('txDate').value=todayStr();
