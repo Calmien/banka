@@ -358,14 +358,15 @@ async function loadData(){
   if(!token){document.getElementById('setupDiv').style.display='block';setBadge('err','bez tokenu');document.getElementById('ledgerWrap').innerHTML='<div class="empty">Nastav token výše.</div>';return;}
   try{
     setBadge('','načítám…');setInfo('Načítám z Notion…');
-    const data=await notionReq('/databases/'+DB_ID+'/query','POST',{sorts:[{property:'Datum',direction:'ascending'}],page_size:100});
+    const data=await notionReq('/databases/'+DB_ID+'/query','POST',{sorts:[{property:'Pořadí',direction:'ascending'}],page_size:100});
     txs=data.results.map(p=>({
       id:p.id,date:p.properties['Datum']?.date?.start||'',
       type:p.properties['Typ']?.select?.name||'',
       amount:p.properties['Částka']?.number||0,
       note:p.properties['Popis']?.title?.[0]?.plain_text||'',
       balance:p.properties['Zůstatek']?.number||0,
-      totalInterest:p.properties['Úrok celkem']?.number||0
+      totalInterest:p.properties['Úrok celkem']?.number||0,
+      order:p.properties['Pořadí']?.number||0
     }));
     document.getElementById('lastUpdate').textContent='aktualizováno '+new Date().toLocaleTimeString('cs-CZ');
     setBadge('ok','notion připojen');setInfo('Načteno ✓');render();
@@ -407,6 +408,7 @@ async function addTx(){
   const note=document.getElementById('txNote').value.trim()||type;
   const amount=type==='výběr'?-(Math.abs(rawAmt)||0):(Math.abs(rawAmt)||0);
   if(amount===0){setInfo('Zadej částku.');return;}
+  const nextOrder=txs.length>0?Math.max(...txs.map(t=>t.order||0))+1:1;
   const newBal=getCurrentBalance()+amount;
   const newIntTotal=type==='úrok'?getCurrentInterestTotal()+amount:getCurrentInterestTotal();
   const btn=document.getElementById('addBtn');btn.disabled=true;setInfo('Ukládám…');
@@ -414,7 +416,8 @@ async function addTx(){
     await notionReq('/pages','POST',{parent:{database_id:DB_ID},properties:{
       'Popis':{title:[{text:{content:note}}]},'Datum':{date:{start:date}},
       'Typ':{select:{name:type}},'Částka':{number:amount},
-      'Zůstatek':{number:newBal},'Úrok celkem':{number:newIntTotal}
+      'Zůstatek':{number:newBal},'Úrok celkem':{number:newIntTotal},
+      'Pořadí':{number:nextOrder}
     }});
     document.getElementById('txAmount').value=type==='kapesné'?'20':'';
     document.getElementById('txNote').value='';
@@ -464,11 +467,13 @@ async function addSundayInterests(){
     const balBefore=relevant.length>0?relevant[relevant.length-1].balance:0;
     const interest=Math.floor(balBefore/20);
     if(interest>0){
+      const nextOrder=txs.length>0?Math.max(...txs.map(t=>t.order||0))+1:1;
       const newBal=getCurrentBalance()+interest,newIntTotal=getCurrentInterestTotal()+interest;
       await notionReq('/pages','POST',{parent:{database_id:DB_ID},properties:{
         'Popis':{title:[{text:{content:'úrok (⌊'+balBefore+'÷20⌋='+interest+')'}}]},
         'Datum':{date:{start:sun}},'Typ':{select:{name:'úrok'}},
-        'Částka':{number:interest},'Zůstatek':{number:newBal},'Úrok celkem':{number:newIntTotal}
+        'Částka':{number:interest},'Zůstatek':{number:newBal},'Úrok celkem':{number:newIntTotal},
+        'Pořadí':{number:nextOrder}
       }});
       await loadData();
     }
