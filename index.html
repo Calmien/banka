@@ -138,10 +138,17 @@
 
   <div class="header">
     <div>
-      <h1>🏦 Adamova banka</h1>
+      <h1 id="childName">👦 Adamova banka</h1>
       <p id="lastUpdate">načítám…</p>
     </div>
-    <span class="badge" id="badge">⬤ připojuji</span>
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+      <div style="display:flex;gap:3px">
+        <button class="child-btn ptab active" data-child="adam" onclick="switchChild('adam')">👦 Adam</button>
+        <button class="child-btn ptab" data-child="zofka" onclick="switchChild('zofka')">👧 Žofka</button>
+      </div>
+      <button class="btn" id="viewOnlyBtn" onclick="toggleViewOnly()" style="height:26px;font-size:10px;padding:0 10px">🔓 editace</button>
+      <span class="badge" id="badge">⬤ připojuji</span>
+    </div>
   </div>
 
   <div id="setupDiv" class="setup" style="display:none">
@@ -260,7 +267,7 @@
   <div style="margin-bottom:1.1rem"></div>
 
   <!-- Formulář -->
-  <div class="box">
+  <div class="box" id="form-section">
     <div class="box-header">
       <span class="section-title" onclick="toggleSection('form')">
         <span class="toggle-arrow">▾</span> Přidat transakci
@@ -313,13 +320,50 @@
 
 </div>
 <script>
-const DB_ID='9266cc0cf54f47ef8fcdca1c06dc1051';
+const CHILDREN={
+  adam:{ name:'Adam', emoji:'👦', dbId:'9266cc0cf54f47ef8fcdca1c06dc1051' },
+  zofka: { name:'Žofka', emoji:'👧', dbId:'eb499decc7c94fefa3f315cd8e631ec4' }
+};
 const PROXY='https://snowy-bonus-0966.michalnozicka7.workers.dev';
 const TOKEN_KEY='adamova_banka_token';
 const GOAL_KEY='adamova_banka_goal';
+const CHILD_KEY='adamova_banka_child';
+const VIEWONLY_KEY='adamova_banka_viewonly';
 let token=localStorage.getItem(TOKEN_KEY)||'';
+let activeChild=localStorage.getItem(CHILD_KEY)||'adam';
+let viewOnly=localStorage.getItem(VIEWONLY_KEY)==='1';
+let DB_ID=CHILDREN[activeChild]?.dbId||CHILDREN.adam.dbId;
 let txs=[],period='all',tablePeriod='all',charts={};
-let goalAmount=parseFloat(localStorage.getItem(GOAL_KEY))||0;
+let goalAmount=parseFloat(localStorage.getItem(GOAL_KEY+':'+activeChild))||0;
+
+function switchChild(key){
+  activeChild=key; DB_ID=CHILDREN[key].dbId;
+  goalAmount=parseFloat(localStorage.getItem(GOAL_KEY+':'+activeChild))||0;
+  localStorage.setItem(CHILD_KEY,key);
+  document.querySelectorAll('.child-btn').forEach(b=>b.classList.toggle('active',b.dataset.child===key));
+  const c=CHILDREN[key];
+  const suffix=key==='zofka'?'in':'ov';
+  document.getElementById('childName').textContent=c.emoji+' '+c.name+'a banka';
+  document.getElementById('goalInput').value=goalAmount||'';
+  txs=[]; loadData();
+}
+
+function toggleViewOnly(){
+  viewOnly=!viewOnly;
+  localStorage.setItem(VIEWONLY_KEY,viewOnly?'1':'0');
+  applyViewOnly();
+}
+
+function applyViewOnly(){
+  const btn=document.getElementById('viewOnlyBtn');
+  btn.textContent=viewOnly?'🔒 view only':'🔓 editace';
+  btn.style.color=viewOnly?'var(--amber)':'var(--text3)';
+  btn.style.borderColor=viewOnly?'var(--amber)':'var(--border)';
+  // skrýt/zobrazit editační sekce
+  document.getElementById('form-section').style.display=viewOnly?'none':'block';
+  document.querySelectorAll('.del-btn').forEach(b=>b.style.display=viewOnly?'none':'');
+  document.querySelectorAll('.btn.danger').forEach(b=>b.style.display=viewOnly?'none':'');
+}
 
 const fmt=n=>parseFloat(n).toLocaleString('cs-CZ',{minimumFractionDigits:2,maximumFractionDigits:2})+' Kč';
 const todayStr=()=>new Date().toISOString().slice(0,10);
@@ -488,7 +532,7 @@ function onTypeChange(){
 // --- CÍL ---
 function updateGoal(){
   goalAmount=parseFloat(document.getElementById('goalInput').value)||0;
-  localStorage.setItem(GOAL_KEY,goalAmount);
+  localStorage.setItem(GOAL_KEY+':'+activeChild,goalAmount);
   renderGoal();
 }
 
@@ -644,6 +688,11 @@ function renderLedger(){
 // --- INIT ---
 document.getElementById('txDate').value=todayStr();
 if(goalAmount>0)document.getElementById('goalInput').value=goalAmount;
+// init child switcher
+document.querySelectorAll('.child-btn').forEach(b=>b.classList.toggle('active',b.dataset.child===activeChild));
+const _c=CHILDREN[activeChild];
+document.getElementById('childName').textContent=_c.emoji+' '+_c.name+'a banka';
+applyViewOnly();
 if(token){loadData();}else{document.getElementById('setupDiv').style.display='block';setBadge('err','bez tokenu');document.getElementById('ledgerWrap').innerHTML='<div class="empty">Nastav Notion token výše.</div>';}
 </script>
 </body>
