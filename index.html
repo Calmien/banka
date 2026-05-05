@@ -321,9 +321,10 @@
 </div>
 <script>
 const CHILDREN={
-  adam:{ name:'Adam', emoji:'👦', dbId:'9266cc0cf54f47ef8fcdca1c06dc1051' },
-  zofka: { name:'Žofka', emoji:'👧', dbId:'eb499decc7c94fefa3f315cd8e631ec4' }
+  adam:  { name:'Adam',  emoji:'👦', label:'Adam'  },
+  zofka: { name:'Žofka', emoji:'👧', label:'Žofka' }
 };
+const DB_ID='9266cc0cf54f47ef8fcdca1c06dc1051';
 const PROXY='https://snowy-bonus-0966.michalnozicka7.workers.dev';
 const TOKEN_KEY='adamova_banka_token';
 const GOAL_KEY='adamova_banka_goal';
@@ -332,17 +333,15 @@ const VIEWONLY_KEY='adamova_banka_viewonly';
 let token=localStorage.getItem(TOKEN_KEY)||'';
 let activeChild=localStorage.getItem(CHILD_KEY)||'adam';
 let viewOnly=localStorage.getItem(VIEWONLY_KEY)==='1';
-let DB_ID=CHILDREN[activeChild]?.dbId||CHILDREN.adam.dbId;
 let txs=[],period='all',tablePeriod='all',charts={};
 let goalAmount=parseFloat(localStorage.getItem(GOAL_KEY+':'+activeChild))||0;
 
 function switchChild(key){
-  activeChild=key; DB_ID=CHILDREN[key].dbId;
+  activeChild=key;
   goalAmount=parseFloat(localStorage.getItem(GOAL_KEY+':'+activeChild))||0;
   localStorage.setItem(CHILD_KEY,key);
   document.querySelectorAll('.child-btn').forEach(b=>b.classList.toggle('active',b.dataset.child===key));
   const c=CHILDREN[key];
-  const suffix=key==='zofka'?'in':'ov';
   document.getElementById('childName').textContent=c.emoji+' '+c.name+'a banka';
   document.getElementById('goalInput').value=goalAmount||'';
   txs=[]; loadData();
@@ -402,7 +401,12 @@ async function loadData(){
   if(!token){document.getElementById('setupDiv').style.display='block';setBadge('err','bez tokenu');document.getElementById('ledgerWrap').innerHTML='<div class="empty">Nastav token výše.</div>';return;}
   try{
     setBadge('','načítám…');setInfo('Načítám z Notion…');
-    const data=await notionReq('/databases/'+DB_ID+'/query','POST',{sorts:[{property:'Pořadí',direction:'ascending'}],page_size:100});
+    const childLabel=CHILDREN[activeChild].label;
+    const data=await notionReq('/databases/'+DB_ID+'/query','POST',{
+      filter:{property:'Dítě',select:{equals:childLabel}},
+      sorts:[{property:'Pořadí',direction:'ascending'}],
+      page_size:100
+    });
     txs=data.results.map(p=>({
       id:p.id,date:p.properties['Datum']?.date?.start||'',
       type:p.properties['Typ']?.select?.name||'',
@@ -461,7 +465,8 @@ async function addTx(){
       'Popis':{title:[{text:{content:note}}]},'Datum':{date:{start:date}},
       'Typ':{select:{name:type}},'Částka':{number:amount},
       'Zůstatek':{number:newBal},'Úrok celkem':{number:newIntTotal},
-      'Pořadí':{number:nextOrder}
+      'Pořadí':{number:nextOrder},
+      'Dítě':{select:{name:CHILDREN[activeChild].label}}
     }});
     document.getElementById('txAmount').value=type==='kapesné'?'20':'';
     document.getElementById('txNote').value='';
@@ -517,7 +522,8 @@ async function addSundayInterests(){
         'Popis':{title:[{text:{content:'úrok (⌊'+balBefore+'÷20⌋='+interest+')'}}]},
         'Datum':{date:{start:sun}},'Typ':{select:{name:'úrok'}},
         'Částka':{number:interest},'Zůstatek':{number:newBal},'Úrok celkem':{number:newIntTotal},
-        'Pořadí':{number:nextOrder}
+        'Pořadí':{number:nextOrder},
+        'Dítě':{select:{name:CHILDREN[activeChild].label}}
       }});
       await loadData();
     }
