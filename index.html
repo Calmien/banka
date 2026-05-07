@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Táta Banka</title>
+<title>Dětská Banka</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
@@ -249,8 +249,7 @@
           <button class="ptab" onclick="setTablePeriod('30')" data-tp="30">30 dní</button>
           <button class="ptab" onclick="setTablePeriod('7')" data-tp="7">7 dní</button>
         </div>
-        <button class="btn danger sm" onclick="clearAll()">Smazat vše</button>
-      </div>
+        </div>
     </div>
     <div class="collapsible-content" id="ledger-content">
       <div class="table-wrap"><div id="ledgerWrap"><div class="empty">načítám…</div></div></div>
@@ -281,7 +280,7 @@ function switchChild(key){
   localStorage.setItem(CHILD_KEY,key);
   document.querySelectorAll('.child-btn').forEach(b=>b.classList.toggle('active',b.dataset.child===key));
   const c=CHILDREN[key];
-  document.getElementById('childName').textContent=c.emoji+' '+c.name+'ova banka';
+  document.getElementById('childName').textContent=c.emoji+' '+(key==='zofka'?'Žofinčina':'Adamova')+' banka';
   document.getElementById('goalInput').value=goalAmount||'';
   txs=[]; loadData();
 }
@@ -543,17 +542,17 @@ function mkChart(id,config){if(charts[id])charts[id].destroy();charts[id]=new Ch
 function renderCharts(){
   const f=filterByPeriod(txs,period);
   if(!f.length){['chartBalance','chartInterest','chartTypes'].forEach(id=>mkChart(id,{type:'line',data:{labels:[],datasets:[]},options:cOpts}));return;}
-  const labels=f.map(t=>t.datetime.length>10?t.datetime.slice(0,16).replace('T',' '):t.date);
+  const labels=f.map(t=>t.time?t.date+' '+t.time:t.date);
   const balData=f.map(t=>t.balance);
   const interestData=f.map(t=>t.type==='úrok'?t.amount:null);
   mkChart('chartBalance',{type:'bar',data:{labels,datasets:[
-    {type:'line',label:'Zůstatek',data:balData,borderColor:'#2d7a5f',backgroundColor:'rgba(45,122,95,0.07)',fill:true,tension:0.35,pointRadius:f.length>30?0:3,borderWidth:2,yAxisID:'y',order:1},
+    {type:'line',label:'Zůstatek',data:balData,borderColor:'#2d7a5f',backgroundColor:'rgba(45,122,95,0.07)',fill:true,tension:0,pointRadius:f.length>30?0:3,borderWidth:2,yAxisID:'y',order:1},
     {type:'bar',label:'Úrok',data:interestData,backgroundColor:'rgba(181,96,10,0.55)',borderColor:'rgba(181,96,10,0.8)',borderWidth:1,borderRadius:3,yAxisID:'y2',order:2}
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,callbacks:{
     title:items=>{
       if(!items.length)return '';
       const date=items[0].label;
-      const dayTxs=f.filter(t=>(t.datetime.length>10?t.datetime.slice(0,16).replace('T',' '):t.date)===date);
+      const dayTxs=f.filter(t=>(t.time?t.date+' '+t.time:t.date)===date);
       if(!dayTxs.length)return date;
       return [date,...dayTxs.map(t=>{const sign=t.amount>=0?'+':'';const icon={kapesné:'💰',vklad:'📥',výběr:'📤',úrok:'✨',pokuta:'🚫'}[t.type]||'•';return icon+' '+t.note+' '+sign+t.amount.toLocaleString('cs-CZ',{minimumFractionDigits:2})+' Kč';})];
     },
@@ -585,7 +584,7 @@ function renderLedger(){
     const delBtn=isLast
       ?`<button class="del-btn" onclick="deleteTx('${t.id}')" title="Smazat poslední">✕</button>`
       :`<button class="del-btn disabled" onclick="deleteTx('${t.id}')" title="Nelze smazat — není poslední">✕</button>`;
-    const timeStr=t.datetime.length>10?' <span style="color:var(--text3)">'+t.datetime.slice(11,16)+'</span>':'';
+    const timeStr=t.time?' <span style="color:var(--text3)">'+t.time+'</span>':'';
     return `<tr>
       <td>${t.date}${timeStr}</td>
       <td><span class="tag t-${t.type}">${t.type}</span></td>
@@ -609,7 +608,7 @@ document.getElementById('txTime').value=nowTime();
 if(goalAmount>0)document.getElementById('goalInput').value=goalAmount;
 document.querySelectorAll('.child-btn').forEach(b=>b.classList.toggle('active',b.dataset.child===activeChild));
 const _c=CHILDREN[activeChild];
-document.getElementById('childName').textContent=_c.emoji+' '+_c.name+'ova banka';
+document.getElementById('childName').textContent=_c.emoji+' '+(activeChild==='zofka'?'Žofinčina':'Adamova')+' banka';
 applyViewOnly();
 if(token){loadData();}else{document.getElementById('setupDiv').style.display='block';setBadge('err','bez tokenu');document.getElementById('ledgerWrap').innerHTML='<div class="empty">Nastav Notion token výše.</div>';}
 </script>
