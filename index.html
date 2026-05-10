@@ -403,7 +403,7 @@ async function addTx(){
   try{
     await notionReq('/pages','POST',{parent:{database_id:DB_ID},properties:{
       'Popis':{title:[{text:{content:note}}]},
-      'Datum':{date:{start:datetime, is_datetime:true}},
+      'Datum':{date:{start:datetime}},
       'Typ':{select:{name:type}},
       'Částka':{number:amount},
       'Zůstatek':{number:newBal},
@@ -461,7 +461,7 @@ async function addSundayInterests(){
       const newBal=getCurrentBalance()+interest;
       await notionReq('/pages','POST',{parent:{database_id:DB_ID},properties:{
         'Popis':{title:[{text:{content:'úrok (⌊'+balBefore+'÷20⌋='+interest+')'}}]},
-        'Datum':{date:{start:sun+'T00:01', is_datetime:true}},
+        'Datum':{date:{start:sun+'T00:01'}},
         'Typ':{select:{name:'úrok'}},
         'Částka':{number:interest},
         'Zůstatek':{number:newBal},
